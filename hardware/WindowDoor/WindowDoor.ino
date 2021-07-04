@@ -1,4 +1,3 @@
-#include <dht11.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 
@@ -8,11 +7,9 @@
 #define STAPSK  "BTDreamSky"
 
 // PORT
-#define DHT11PIN 2
-#define FIRE 4
-#define GAS 0
+#define RAIN 4
+#define WINDOW 0
 
-dht11 DHT11;
 
 void init_serial(){
   Serial.begin(9600);
@@ -28,8 +25,8 @@ void init_wifi(){
 }
 
 void init_gas_fire(){
-  pinMode(GAS, INPUT);
-  pinMode(FIRE, INPUT);
+  pinMode(RAIN, INPUT);
+  pinMode(WINDOW, INPUT);
 }
 
 void setup()
@@ -41,21 +38,17 @@ void setup()
 
 void loop()
 {
-  DHT11.read(DHT11PIN);
-  float humidity = (float)DHT11.humidity;
-  float temperature = (float)DHT11.temperature;
-  bool is_fire = !(bool)digitalRead(FIRE);
-  bool is_gas = !(bool)digitalRead(GAS);
+  bool is_rain = !(bool)digitalRead(RAIN);
+  bool is_window = !(bool)digitalRead(WINDOW);
 
-  String data = "humidity=" + String(humidity) + "&temperature=" + String(temperature)
-    + "&is_fire=" + String(is_fire) + "&is_gas=" + String(is_gas);
+  String data = "&is_rain=" + String(is_rain) + "&is_window=" + String(is_window);
 
   if ((WiFi.status() == WL_CONNECTED)) {
     WiFiClient client;
     HTTPClient http;
 
     Serial.print("[HTTP] begin...\n");
-    http.begin(client, "http://" SERVER_IP "/data/");
+    http.begin(client, "http://" SERVER_IP "/window/");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
 
     Serial.print("[HTTP] POST...\n");

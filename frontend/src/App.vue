@@ -1,8 +1,11 @@
 <template>
   <div id="app">
-    <router-link to="/">Home</router-link>
-    <router-link to="/about/">About</router-link>
     <router-view/>
+    <div class="footer-copyright">
+      <div align="center">
+        <p>Powered by <a href="https://idreamsky.net/">iDreamSky.net</a></p>
+        <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow" class="web_icp">鲁ICP备19031918号-2</a></div>
+    </div>
   </div>
 </template>
 
