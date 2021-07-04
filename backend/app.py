@@ -27,6 +27,23 @@ def light_status():
     f.close()
     return status
 
+@app.route('/window/', methods=['POST'])
+def window_update():
+    data = {}
+    for item in request.form:
+        data[item] = request.form[item]
+    f = open('window', 'w')
+    f.write(json.dumps(data))
+    f.close()
+    return data
+
+@app.route('/window/', methods=['GET'])
+def window_status():
+    f = open('window', 'r')
+    data = f.readline()
+    f.close()
+    return data
+
 @app.route('/data/', methods=['POST'])
 def update():
     data = {}
